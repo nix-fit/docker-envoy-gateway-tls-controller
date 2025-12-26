@@ -1,0 +1,15 @@
+certificate:
+  readiness_string: "Certificate is up to date and has not expired"
+  cert_name_suffix: "envoy-gateway-tls"
+kubernetes:
+  use_external: False
+  crd:
+    certificate:
+      group: "cert-manager.io"
+      version: "v1"
+      plural: "certificates"
+    envoy_getaway:
+      group: "gateway.networking.k8s.io"
+      version: "v1"
+      plural: "gateways"
+      name: "envoy-gateway"
