@@ -45,7 +45,7 @@ RUN python3.13 -m venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
 
 # Upgrade pip within the virtual environment (recommended)
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 
 # Install dependencies from requirements.txt using the virtual environment's pip
 RUN pip install --no-cache-dir -r requirements.txt
