@@ -2,7 +2,7 @@
 FROM nix-docker.registry.twcstorage.ru/base/redhat/ubi10-minimal:10.1000-1766033715@sha256:05edf453b46e8f615ddad5bbeb3acebc4fbe3d467e2642d14cf43defd2b9465d
 # Include python3.13-devel if Python headers are needed for some packages
 # This step assumes python3.13 is available via dnf. If not, you need to install Python 3.13 first (e.g., compile from source).
-ADD epel.repo /etc/yum.repos.d/
+COPY epel.repo /etc/yum.repos.d/
 RUN microdnf update -y && \
     # Example: Install Python 3.13 if available via dnf. Replace with actual package name if different.
     microdnf install -y python3.13 python3.13-devel python3.13-pip \
