@@ -1,0 +1,5 @@
+[EPEL10]
+name=epel10
+baseurl=https://dl.fedoraproject.org/pub/epel/10.1/Everything/x86_64/
+enabled=1
+gpgcheck=0
