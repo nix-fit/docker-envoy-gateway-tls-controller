@@ -1,7 +1,9 @@
 # Base image ubi10
 FROM nix-docker.registry.twcstorage.ru/base/redhat/ubi10-minimal:10.1000-1766033715@sha256:05edf453b46e8f615ddad5bbeb3acebc4fbe3d467e2642d14cf43defd2b9465d
+
 # Add extra packages repo
 COPY epel.repo /etc/yum.repos.d/
+
 # Install python and necesary libs
 RUN microdnf update -y && \
     microdnf install -y \
@@ -34,13 +36,5 @@ RUN pip install --no-cache-dir --upgrade pip==25.3 && \
 # Copy application code
 COPY . .
 
-# Set the FILE_PATH env to specify which operator to run
-ARG FILE_PATH
-ENV FILE_PATH=${FILE_PATH}
-
-# Set the namespace
-ARG NAMESPACE
-ENV NAMESPACE=${NAMESPACE}
-
-# Run specified operator
-CMD ["sh", "-c", "python -m kopf run -n $NAMESPACE $FILE_PATH"]
+# Run kopf
+ENTRYPOINT [ "python", "-m", "kopf", "run" ]
