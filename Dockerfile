@@ -15,15 +15,6 @@ RUN microdnf update -y && \
     tar \
     && microdnf clean all
 
-# Set the HOME environment variable to /app
-ENV HOME=/app
-# Set the config folder (relative to HOME)
-ARG APP_CONFIG_DIR
-ENV APP_CONFIG_DIR=${APP_CONFIG_DIR}
-# Set the name of config file (without extension)
-ARG APP_CONFIG_NAME
-ENV APP_CONFIG_NAME=${APP_CONFIG_NAME}
-
 # Set working directory
 WORKDIR /app
 
