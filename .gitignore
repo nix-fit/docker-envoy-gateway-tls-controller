@@ -5,6 +5,7 @@ Thumbs.db
 # Editors / IDEs
 .idea/
 .vscode/
+config/
 *.swp
 *.swo
 *~
