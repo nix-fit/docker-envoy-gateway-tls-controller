@@ -4,7 +4,7 @@ FROM nix-docker.registry.twcstorage.ru/base/redhat/ubi10-minimal:10.1000-1766033
 COPY epel.repo /etc/yum.repos.d/
 # Install python and necesary libs
 RUN microdnf update -y && \
-    microdnf install -y && \
+    microdnf install -y \
     python3.13 \
     python3.13-devel \
     python3.13-pip \
