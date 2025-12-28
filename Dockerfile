@@ -11,15 +11,6 @@ RUN microdnf update -y && \
     gcc \
     gcc-c++ \
     make \
-    # zlib-devel \
-    # bzip2-devel \
-    # openssl-devel \
-    # ncurses-devel \
-    # sqlite-devel \
-    # tk-devel \
-    # libpcap-devel \
-    # xz-devel \
-    # libffi-devel \
     wget \
     tar \
     && microdnf clean all
