@@ -45,11 +45,9 @@ RUN python3.13 -m venv /app/venv
 # Set the PATH to venv
 ENV PATH="/app/venv/bin:$PATH"
 
-# Upgrade pip
-RUN pip install --no-cache-dir --upgrade pip==25.3
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install dependencies
+RUN pip install --no-cache-dir --upgrade pip==25.3 && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY . .
