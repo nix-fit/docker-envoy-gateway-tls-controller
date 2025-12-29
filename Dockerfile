@@ -1,6 +1,8 @@
 # Base image ubi10
 FROM nix-docker.registry.twcstorage.ru/base/redhat/ubi10-minimal:10.1000-1766033715@sha256:05edf453b46e8f615ddad5bbeb3acebc4fbe3d467e2642d14cf43defd2b9465d
 
+RUN echo "kopfuser:x:10001:10001:Kopf User:/nonexistent:/bin/false" >> /etc/passwd
+
 # Add extra packages repo
 COPY epel.repo /etc/yum.repos.d/
 
