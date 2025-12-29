@@ -34,12 +34,18 @@ def update_route(spec: dict, name: str, namespace: str, logger, **kwargs):
         .get("crd", {})
         .get("certificate", {})
     )
+    envoy_namespace = (
+        config_lib.app_config.config.get("kubernetes", {})
+        .get("crd", {})
+        .get("envoy_getaway", {})
+        .get("namespace", "")
+    )
     logger.info(certificate_params)
     api = custom_api.get_api()
     obj = api.create_namespaced_custom_object(
         group=certificate_params.get("group", ""),
         version=certificate_params.get("version", "v1"),
-        namespace=namespace,
+        namespace=envoy_namespace,
         plural=certificate_params.get("plural", "certificates"),
         body=data,
     )
