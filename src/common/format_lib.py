@@ -23,5 +23,5 @@ def format_certificate(
     cert_obj["spec"]["secretName"] = cert_name_format
     cert_obj["spec"]["dnsNames"] = alt_names
     cert_obj["metadata"]["name"] = cert_name_format
-    cert_obj["metadata"]["namespace"] = namespace
+    # cert_obj["metadata"]["namespace"] = namespace
     return cert_obj
