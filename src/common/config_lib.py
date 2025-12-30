@@ -30,5 +30,8 @@ class Config:
         config = yaml.safe_load(file_string)
         return config
 
+    def get_config(self):
+        return self.config
+
 
 app_config = Config()

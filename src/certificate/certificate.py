@@ -7,9 +7,28 @@ import src.common.format_lib as format_lib
 from src.common.kubernetes_lib import custom_api
 import kubernetes
 
+app_config: dict = config_lib.app_config.get_config()
 
+
+@kopf.on.update("httproutes")
 @kopf.on.create("httproutes")
-def update_route(spec: dict, name: str, namespace: str, logger, **kwargs):
+def create_certificate(
+    spec: dict, annotations: dict, name: str, namespace: str, logger, **kwargs
+):
+    annotation_label = app_config.get("kubernetes", {}).get(
+        "route_annotation_label", ""
+    )
+    annotation_value = app_config.get("kubernetes", {}).get(
+        "route_annotation_value", ""
+    )
+    route_annotation_value = annotations.get(annotation_label, "")
+    if (
+        not route_annotation_value
+        or route_annotation_value.lower() != annotation_value.lower()
+    ):
+        raise kopf.PermanentError(
+            f"Annotations for HTTPRoute are not valid. {annotations=}"
+        )
     route_hostnames = spec.get("hostnames", [])
     if not route_hostnames:
         raise kopf.PermanentError(
@@ -30,12 +49,10 @@ def update_route(spec: dict, name: str, namespace: str, logger, **kwargs):
         raise kopf.PermanentError(f"Error while formatting certificate.")
     logger.info(f"Gathered certificate info: {data}")
     certificate_params = (
-        config_lib.app_config.config.get("kubernetes", {})
-        .get("crd", {})
-        .get("certificate", {})
+        app_config.get("kubernetes", {}).get("crd", {}).get("certificate", {})
     )
     envoy_namespace = (
-        config_lib.app_config.config.get("kubernetes", {})
+        app_config.get("kubernetes", {})
         .get("crd", {})
         .get("envoy_getaway", {})
         .get("namespace", "")
@@ -59,16 +76,14 @@ def update_envoy(spec: dict, status: dict, name: str, namespace: str, logger, **
         raise kopf.TemporaryError(f"Cannot retrieve statuses from certificate {name}")
     cert_current_status = cert_statuses[0].get("message", "")
     if cert_current_status not in [
-        config_lib.app_config.config.get("certificate", {}).get("readiness_string", "")
+        app_config.get("certificate", {}).get("readiness_string", "")
     ]:
         raise kopf.TemporaryError(
             f"Invalid certificate {name} status: {cert_current_status}"
         )
     logger.info(f"Certificate {name} is ready. Starting patching gateway.")
     envoy_params = (
-        config_lib.app_config.config.get("kubernetes", {})
-        .get("crd", {})
-        .get("envoy_getaway", {})
+        app_config.get("kubernetes", {}).get("crd", {}).get("envoy_getaway", {})
     )
     api = kubernetes.client.CustomObjectsApi()
     gateway = api.get_namespaced_custom_object(
